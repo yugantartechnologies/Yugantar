@@ -48,3 +48,12 @@ exports.deleteAttendance = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getAttendanceByStudentId = async (req, res) => {
+  try {
+    const attendances = await Attendance.find({ studentId: req.params.studentId });
+    res.json(attendances);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
