@@ -22,6 +22,9 @@ mongoose.connect(process.env.MONGO_URI)
     const internshipInquiryRoutes = require('./routes/internshipInquiryRoutes');
     app.use('/api/internship-inquiries', internshipInquiryRoutes);
 
+    const serviceBookingRoutes = require('./routes/serviceBookingRoutes');
+    app.use('/api/service-bookings', serviceBookingRoutes);
+
     app.listen(process.env.PORT, () => {
       console.log(`Server running on port ${process.env.PORT}`);
     });
