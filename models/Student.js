@@ -4,7 +4,24 @@ const Counter = require('./Counter');
 const studentSchema = new mongoose.Schema({
   rollNo: { type: String, unique: true },
   name: { type: String, required: true },
+  email: { type: String },
+  mobile: { type: String },
+  dateOfBirth: { type: Date },
+  gender: { type: String, enum: ['Male', 'Female', 'Other'] },
+  address: {
+    city: { type: String },
+    state: { type: String }
+  },
+  collegeName: { type: String },
   course: { type: String, required: true },
+  branch: { type: String },
+  currentSemester: { type: Number },
+  passingYear: { type: Number },
+  cgpa: { type: Number },
+  internshipType: { type: String },
+  internshipDuration: { type: String, enum: ['1 month', '3 months', '6 months'] },
+  preferredStartDate: { type: Date },
+  mode: { type: String, enum: ['Online', 'Offline', 'Hybrid'] },
   type: { type: String, required: true }
 }, { timestamps: true });
 
