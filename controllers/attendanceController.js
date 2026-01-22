@@ -2,6 +2,35 @@ const Attendance = require('../models/Attendance');
 
 exports.createAttendance = async (req, res) => {
   try {
+    const { studentId, markedAt } = req.body;
+    
+    // Validate and set attendance date
+    let attendanceDate;
+    if (markedAt) {
+      attendanceDate = new Date(markedAt);
+      if (isNaN(attendanceDate.getTime())) {
+        return res.status(400).json({ error: 'Invalid markedAt date' });
+      }
+    } else {
+      attendanceDate = new Date();
+    }
+    
+    // Set the validated date in req.body
+    req.body.markedAt = attendanceDate;
+    
+    const startOfDay = new Date(attendanceDate.getFullYear(), attendanceDate.getMonth(), attendanceDate.getDate());
+    const endOfDay = new Date(attendanceDate.getFullYear(), attendanceDate.getMonth(), attendanceDate.getDate() + 1);
+    
+    // Check if attendance already exists for this student on this date
+    const existingAttendance = await Attendance.findOne({
+      studentId: studentId,
+      markedAt: { $gte: startOfDay, $lt: endOfDay }
+    });
+    
+    if (existingAttendance) {
+      return res.status(400).json({ error: 'Attendance already marked for this student on this date' });
+    }
+    
     const attendance = new Attendance(req.body);
     await attendance.save();
     res.status(201).json(attendance);
